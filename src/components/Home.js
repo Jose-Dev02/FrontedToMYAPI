@@ -6,23 +6,25 @@ export const Home = () => {
     return (
         <div className='home'>
             <h1>
-                Hola, soy José Luis Matos <strong>Web Developer</strong> en Cuba,
-                y ofrezco mis servicios de <strong> programación y desarrollo </strong>
-                en todo tipo de proyectos web.
+                Backend(C# Asp.NET MINIMAL API) and Fronted (JavaScript React)
             </h1>
 
             <h2 className='title'>
-                Te ayudo a crear tu sitio o aplicacion web, tener
-                mas visibilidad y relevancia en Internet. <Link to="/contactus">Contacta conmigo.</Link>
+                Hola soy <strong>Jose</strong> alias <strong>JoseDEV</strong> y esto es una muestra de algunos de mis conocimientos sobre desarrollo Web.
+                Todas los datos de la tienda son guardados en una base de datos pero son solo para demostración.
+
+
             </h2>
 
-            <section className='last-works'>
+            <Link to="/contactus">Contacta conmigo.</Link>
+
+            {/* <section className='last-works'>
                 <h2 className='heading'> Algunos de mis proyectos</h2>
                 <p> Estos son algunos de mis trabajos de desarrollo web.</p>
 
                 <ListadoTrabajos limite='2' />
 
-            </section>
+            </section> */}
         </div>
     )
 }

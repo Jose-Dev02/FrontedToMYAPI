@@ -43,6 +43,13 @@ export const HeaderNav = () => {
                         > Contact Us </NavLink>
 
                     </li>
+                    <li>
+                        <NavLink
+                            to='/'
+                            className={({ isActive }) => isActive ? "activated" : ""}
+                        > Log Out </NavLink>
+
+                    </li>
                 </ul>
             </nav>
         </header>

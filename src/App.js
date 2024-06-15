@@ -1,14 +1,18 @@
 
-import { MisRutas } from './Rutas/MisRutas';
 import './App.css';
+import { Log } from './components/Log'
+import React from 'react';
+
+
 
 
 function App() {
+
+
   return (
 
-    <div className='layout'>
-      < MisRutas />
-    </div>
+    <Log />
+
   );
 }
 

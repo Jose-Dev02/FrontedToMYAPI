@@ -9,41 +9,40 @@ import { HeaderNav } from '../components/layout/HeaderNav';
 import { Footer } from '../components/layout/Footer';
 import { Proyecto } from '../components/Proyecto';
 import { Error } from '../components/Error';
+import { Log } from '../components/Log';
 
 
 export const MisRutas = () => {
     return (
-        <div>
-            <BrowserRouter>
-                {/* Header y Navegacion */}
-                < HeaderNav />
+
+        <div className='layout'>
+            <div>
+                <BrowserRouter>
+                    {/* Header y Navegacion */}
+                    < HeaderNav />
 
 
-                {/*Contenido Central */}
-                <section className='content'>
-                    <Routes>
-                        <Route path='/' element={<Navigate to="/home" />} />
-                        <Route path='/Home' element={<Home />} />
-                        <Route path='/service' element={<Service />} />
-                        <Route path='/portafolio' element={<Portafolio />} />
-                        <Route path='/cv' element={<CV />} />
-                        <Route path='/contactus' element={<ContactUs />} />
-                        <Route path='/portafolio/proyecto/:id' element={<Proyecto />} />
-                        <Route path='/home/proyecto/:id' element={<Proyecto />} />
-                        <Route path='/*' element={<Error />} />
+                    {/*Contenido Central */}
+                    <section className='content'>
+                        <Routes>
+                            <Route path='/' element={<Navigate to="/home" />} />
+                            <Route path='/home' element={<Home />} />
+                            <Route path='/service' element={<Service />} />
+                            <Route path='/portafolio' element={<Portafolio />} />
+                            <Route path='/cv' element={<CV />} />
+                            <Route path='/contactus' element={<ContactUs />} />
+                            <Route path='/portafolio/proyecto/:id' element={<Proyecto />} />
+                            <Route path='/home/proyecto/:id' element={<Proyecto />} />
+                            <Route path='/*' element={<Error />} />
+                            <Route path='/auth' element={<Log />} />
 
-                    </Routes>
+                        </Routes>
 
-                </section>
-
-
-
-
-                {/*Footer */}
-                < Footer />
-
-            </BrowserRouter>
-
+                    </section>
+                    {/*Footer */}
+                    < Footer />
+                </BrowserRouter>
+            </div>
         </div>
     )
 }
