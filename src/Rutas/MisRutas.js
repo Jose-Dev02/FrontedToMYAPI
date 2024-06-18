@@ -10,6 +10,8 @@ import { Footer } from '../components/layout/Footer';
 import { Proyecto } from '../components/Proyecto';
 import { Error } from '../components/Error';
 import { Log } from '../components/Log';
+import { Warehouse } from '../components/Warehouse';
+import { Tienda } from '../components/Tienda';
 
 
 export const MisRutas = () => {
@@ -34,7 +36,7 @@ export const MisRutas = () => {
                             <Route path='/portafolio/proyecto/:id' element={<Proyecto />} />
                             <Route path='/home/proyecto/:id' element={<Proyecto />} />
                             <Route path='/*' element={<Error />} />
-                            <Route path='/auth' element={<Log />} />
+                            <Route path='/store/warehouse' element={<Tienda />} />
 
                         </Routes>
 

@@ -1,6 +1,6 @@
 
 import './App.css';
-import { Log } from './components/Log'
+import { MisRutas } from './Rutas/MisRutas';
 import React from 'react';
 
 
@@ -11,7 +11,7 @@ function App() {
 
   return (
 
-    <Log />
+    <MisRutas />
 
   );
 }

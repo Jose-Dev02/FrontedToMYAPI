@@ -4,13 +4,14 @@ import { urlValidar } from '../endpoints';
 import { MisRutas } from '../Rutas/MisRutas'
 
 export const Log = () => {
-
+    axios.defaults.withCredentials = true;
     const [user, setUser] = useState({
         id: 0,
         name: "",
         correo: "",
         password: "",
         clave: "",
+        salt: "",
         isAdmin: false
     });
 
@@ -30,11 +31,11 @@ export const Log = () => {
             const response = await axios.post(urlValidar, user);
             if (response.data.success) {
                 setAuthenticated(true);
-                console.log({ response })
+                console.log({ response }, authenticated)
 
             }
             else {
-                setError(response.data.message);
+                setError(response.message);
             }
         } catch (error) {
             setError(error.message)
