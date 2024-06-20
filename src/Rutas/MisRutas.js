@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, NavLink, BrowserRouter, Navigate } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import { Home } from '../components/Home';
 import { Service } from '../components/Service';
 import { Portafolio } from '../components/Portafolio';
@@ -9,16 +9,14 @@ import { HeaderNav } from '../components/layout/HeaderNav';
 import { Footer } from '../components/layout/Footer';
 import { Proyecto } from '../components/Proyecto';
 import { Error } from '../components/Error';
-import { Log } from '../components/Log';
-import { Warehouse } from '../components/Warehouse';
 import { Tienda } from '../components/Tienda';
 
 
 export const MisRutas = () => {
     return (
 
-        <div className='layout'>
-            <div>
+        <div >
+            <div className='layout'>
                 <BrowserRouter>
                     {/* Header y Navegacion */}
                     < HeaderNav />
@@ -42,9 +40,10 @@ export const MisRutas = () => {
 
                     </section>
                     {/*Footer */}
-                    < Footer />
+
                 </BrowserRouter>
             </div>
+            <Footer />
         </div>
     )
 }
