@@ -14,71 +14,107 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
+import Tooltip from '@mui/material/Tooltip';
+import { Favorite, ShoppingCart } from '@mui/icons-material';
 
 export const Tienda = () => {
-    const [value, setValue] = useState(0);
-    const [loading, setLoading] = useState(true);
-    const [item, setItem] = useState([]);
-    const [error, setError] = useState(null);
-    const [categorias, setCategorias] = useState([]);
-    const [selectValue, setSelectValue] = useState(1);
+    const [state, setState] = useState({
+        value: 0,
+        loading: true,
+        items: [],
+        error: null,
+        categories: [],
+        selectedCategoryId: 1,
+        filteredItems: [],
+    });
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        setState((prevState) => ({
+            ...prevState,
+            value: newValue,
+        }));
     };
 
-    const handleSelect = (e, categoriaId) => {
-        if (selectValue !== categoriaId) {
-            setSelectValue(categoriaId);
-            console.log(categoriaId);
-        }
+    const filterItems = (items, categoryId) => items.filter((item) => item.product.categoryId === categoryId);
+
+    const handleSelect = (e, categoryId) => {
+        setState((prevState) => {
+            if (prevState.selectedCategoryId !== categoryId) {
+                return {
+                    ...prevState,
+                    selectedCategoryId: categoryId,
+                    filteredItems: filterItems(prevState.items, categoryId),
+                };
+            }
+            return prevState;
+        });
     };
 
     useEffect(() => {
-        const handleChargeData = async () => {
+        const fetchData = async () => {
             try {
-                const [responseCategories, responseWarehouse] = await Promise.all([
+                const [categoriesResponse, warehouseResponse] = await Promise.all([
                     axios.get(urlCategoriesAll),
-                    axios.get(urlWarehouseGetAll)
+                    axios.get(urlWarehouseGetAll),
                 ]);
 
-                if (responseCategories.data.success) {
-                    setCategorias(responseCategories.data.category);
-                    setSelectValue(responseCategories.data.category[0]?.id || 1);
-                } else {
-                    setError(responseCategories.data.message);
-                }
+                if (categoriesResponse.data.success && warehouseResponse.data.success) {
+                    const categories = categoriesResponse.data.category;
+                    const items = warehouseResponse.data.warehouse;
+                    const selectedCategoryId = categories[0]?.id || 1;
+                    const filteredItems = filterItems(items, selectedCategoryId);
 
-                if (responseWarehouse.data.success) {
-                    setItem(responseWarehouse.data.warehouse);
+                    setState({
+                        value: 0,
+                        loading: false,
+                        items: items,
+                        error: null,
+                        categories: categories,
+                        selectedCategoryId: selectedCategoryId,
+                        filteredItems: filteredItems,
+                    });
+
                 } else {
-                    setError(responseWarehouse.data.message);
+                    let errors
+                    errors.Add(categoriesResponse.data.message);
+                    errors.Add(warehouseResponse.data.message);
+                    setState((prevState) => {
+
+                        return {
+                            ...prevState,
+                            loading: false,
+                            error: errors,
+                        }
+
+                    });
                 }
             } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
+                setState((prevState) => ({
+                    ...prevState,
+                    loading: false,
+                    error: error.message,
+                }));
             }
         };
 
-        handleChargeData();
+        fetchData();
     }, []);
 
-    if (loading) {
+    if (state.loading) {
         return <div>Loading...</div>;
     }
 
-    if (error) {
-        return <div>{error}</div>;
+    if (state.error) {
+        return <div>Error: {state.error}</div>;
     }
 
-
+    console.log(state.items);
     return (
         <div>
             <div>
                 <Box sx={{ bgcolor: 'background.paper' }}>
                     <Tabs
-                        value={value}
+                        value={state.value}
                         onChange={handleChange}
                         variant="scrollable"
                         scrollButtons
@@ -90,7 +126,7 @@ export const Tienda = () => {
                         }}
 
                     >
-                        {categorias.map((categoria) => (
+                        {state.categories.map((categoria) => (
                             <Tab
                                 key={categoria.id}
                                 label={categoria.name}
@@ -105,52 +141,64 @@ export const Tienda = () => {
             <div>
                 <Box sx={{ flexGrow: 1, padding: 2 }}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Card sx={{
-                                maxWidth: '100%',
-                                '@media (max-width:600px)': {
-                                    maxWidth: 400,
-                                },
-                                '@media (min-width:600px)': {
-                                    maxWidth: 400,
-                                },
-                                '@media (min-width:960px)': {
-                                    maxWidth: 345,
-                                },
+                        {state.filteredItems.map((item) => (
+                            <Grid item xs={12} sm={6} md={3} key={item.id}>
+                                <Card sx={{
+                                    maxWidth: '100%',
+                                    '@media (max-width:600px)': {
+                                        maxWidth: 345,
+                                    },
+                                    '@media (min-width:600px)': {
+                                        maxWidth: 400,
+                                    },
+                                    '@media (min-width:960px)': {
+                                        maxWidth: 345,
+                                    },
 
-                            }}>
-                                <CardMedia
-                                    component="img"
-                                    alt="green iguana"
-                                    height="140"
-                                    image="/static/images/cards/contemplative-reptile.jpg"
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        Lizard
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Lizards are a widespread group of squamate reptiles, with over 6,000
-                                        species, ranging across all continents except Antarctica
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <Button size="small">Share</Button>
-                                    <Button size="small">Learn More</Button>
-                                </CardActions>
-                            </Card>
+                                }}>
+                                    <CardMedia
+                                        component="img"
+                                        alt={item.product.name}
+                                        height="140"
+                                        image={item.product.mediaURL}
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h6" component="div">
+                                            {item.product.name}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.primary" >
+                                            {`${item.product.price}$`}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <Tooltip title='Favorito' >
 
-                        </Grid>
+                                            <Button size='small' sx={{ p: 0, color: '#fa4529', }}>
 
-                        {/* Agrega más tarjetas aquí */}
+                                                <Favorite />
+
+                                            </Button>
+
+                                        </Tooltip>
+
+                                        <Box sx={{ flexGrow: 1 }} />
+                                        <Tooltip title='Agreagar al carrito' >
+
+                                            <Button size='small' sx={{ p: 0, color: '#000', }}>
+
+                                                <ShoppingCart />
+                                            </Button>
+
+                                        </Tooltip>
+                                    </CardActions>
+                                </Card>
+
+                            </Grid>
+                        ))}
                     </Grid>
                 </Box>
-
-
             </div >
-
         </div>
-
     );
 }
 
