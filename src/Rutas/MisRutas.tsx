@@ -25,8 +25,8 @@ export const MisRutas: React.FC = () => {
 
     return (
 
-        <div >
-            <div className='layout'>
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <div className='layout' style={{ flex: 1 }}>
                 <BrowserRouter>
                     {/* Header y Navegacion */}
                     < HeaderNav />

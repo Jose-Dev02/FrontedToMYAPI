@@ -3,16 +3,11 @@ import './App.css';
 import { MisRutas } from './Rutas/MisRutas.tsx';
 import React from 'react';
 
-
-
-
-function App() {
-
-
+const App: React.FC = () => {
   return (
-
-    <MisRutas />
-
+    
+     <MisRutas />
+   
   );
 }
 

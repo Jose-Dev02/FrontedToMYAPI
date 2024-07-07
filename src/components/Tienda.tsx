@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { urlCategoriesAll, urlWarehouseGetAll } from '../endpoints';
+import { urlCategoriesAll, urlWarehouseGetAll } from '../endpoints.tsx';
 
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
