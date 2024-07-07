@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import { Home } from '../components/Home';
 import { ContactUs } from '../components/ContactUs';
@@ -9,6 +9,7 @@ import { Tienda } from '../components/Tienda';
 
 
 export const MisRutas = () => {
+    const [carrito, setCarrito] = useState([]);
     return (
 
         <div >
@@ -25,7 +26,7 @@ export const MisRutas = () => {
                             <Route path='/home' element={<Home />} />
                             <Route path='/contactus' element={<ContactUs />} />
                             <Route path='/*' element={<Home />} />
-                            <Route path='/store/warehouse' element={<Tienda />} />
+                            <Route path='/store/warehouse' element={<Tienda carrito={carrito} setCarrito={setCarrito} />} />
 
                         </Routes>
 

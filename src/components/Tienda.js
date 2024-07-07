@@ -15,9 +15,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import Tooltip from '@mui/material/Tooltip';
-import { AddShoppingCart, Favorite, FavoriteBorder } from '@mui/icons-material';
+import { AddShoppingCart, Favorite, FavoriteBorder, Check } from '@mui/icons-material';
 
-export const Tienda = () => {
+export const Tienda = ({ carrito, setCarrito }) => {
     const [state, setState] = useState({
         value: 0,
         loading: true,
@@ -59,6 +59,19 @@ export const Tienda = () => {
                 [itemId]: !prevState.favoriteItems[itemId],
             },
         }));
+    };
+
+    const handleCartClick = (item) => {
+
+        setCarrito((prevCarrito) => {
+            const isInCart = prevCarrito.find((cartItem) => cartItem.item.id === item.id);
+            if (isInCart) {
+                return prevCarrito.filter((cartItem) => cartItem.item.id !== item.id);
+            } else {
+                return [...prevCarrito, { item, quantity: 1 }];
+            }
+        });
+
     };
 
     useEffect(() => {
@@ -115,6 +128,7 @@ export const Tienda = () => {
     if (state.error) {
         return <div>Error: {state.error}</div>;
     }
+
     return (
         <div>
             <div>
@@ -190,9 +204,11 @@ export const Tienda = () => {
                                         </Tooltip>
 
                                         <Box sx={{ flexGrow: 1 }} />
-                                        <Tooltip title="Agregar al carrito">
-                                            <Button size="small" sx={{ p: 0, color: '#000' }}>
-                                                <AddShoppingCart />
+                                        <Tooltip title={carrito.find((cartItem) => cartItem.item.id === item.id) ? "Quitar del carrito" : "Agregar al carrito"}>
+                                            <Button size="small" sx={{ p: 0, color: '#000' }}
+                                                onClick={() => handleCartClick(item)}>
+                                                {carrito.find((cartItem) => cartItem.item.id === item.id) ? <Check /> : <AddShoppingCart />}
+
                                             </Button>
                                         </Tooltip>
                                     </CardActions>
