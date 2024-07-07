@@ -16,29 +16,40 @@ import Typography from '@mui/material/Typography';
 
 import Tooltip from '@mui/material/Tooltip';
 import { AddShoppingCart, Favorite, FavoriteBorder, Check } from '@mui/icons-material';
+import { ICartItem } from './interface/ICartItem';
+import { IItem } from './interface/IItem';
+import { ICategory } from './interface/ICategory';
 
-export const Tienda = ({ carrito, setCarrito }) => {
+interface TiendaProps {
+    carrito: ICartItem[];
+    setCarrito: React.Dispatch<React.SetStateAction<ICartItem[]>>;
+    SLS: (carrito: ICartItem[]) => void; // Función para guardar en localStorage
+    GFLS: () => ICartItem[]; // Función para obtener del localStorage
+}
+
+export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS, GFLS }) => {
     const [state, setState] = useState({
         value: 0,
         loading: true,
-        favoriteItems: {},
-        items: [],
-        error: null,
-        categories: [],
+        favoriteItems: {} as Record<number, boolean>,
+        items: [] as IItem[], 
+        error: null as string | null,
+        categories: [] as ICategory[], 
         selectedCategoryId: 1,
-        filteredItems: [],
+        filteredItems: [] as IItem[], 
     });
 
-    const filterItems = (items, categoryId) => items.filter((item) => item.product.categoryId === categoryId);
 
-    const handleChange = (e, newValue) => {
+    const filterItems = (items: IItem[], categoryId: number) => items.filter((item) => item.product.categoryId === categoryId);
+
+    const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
         setState((prevState) => ({
             ...prevState,
             value: newValue,
         }));
     };
 
-    const handleSelect = (e, categoryId) => {
+    const handleSelect = (e: React.MouseEvent<{}>, categoryId: number) => {
         setState((prevState) => {
             if (prevState.selectedCategoryId !== categoryId) {
                 return {
@@ -51,7 +62,7 @@ export const Tienda = ({ carrito, setCarrito }) => {
         })
     };
 
-    const handleClick = (itemId) => {
+    const handleClick = (itemId: number) => {
         setState((prevState) => ({
             ...prevState,
             favoriteItems: {
@@ -61,7 +72,7 @@ export const Tienda = ({ carrito, setCarrito }) => {
         }));
     };
 
-    const handleCartClick = (item) => {
+    const handleCartClick = (item: IItem) => {
 
         setCarrito((prevCarrito) => {
             const isInCart = prevCarrito.find((cartItem) => cartItem.item.id === item.id);
@@ -100,13 +111,13 @@ export const Tienda = ({ carrito, setCarrito }) => {
                     });
 
                 } else {
-                    let errors = [];
+                    let errors: string[] = [];
                     errors.push(categoriesResponse.data.message);
                     errors.push(warehouseResponse.data.message);
                     setState((prevState) => ({
                         ...prevState,
                         loading: false,
-                        error: errors,
+                        error: errors.join(', '),
                     }));
                 }
             } catch (error) {

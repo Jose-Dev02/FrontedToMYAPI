@@ -1,6 +1,6 @@
 
 import './App.css';
-import { MisRutas } from './Rutas/MisRutas';
+import { MisRutas } from './Rutas/MisRutas.tsx';
 import React from 'react';
 
 

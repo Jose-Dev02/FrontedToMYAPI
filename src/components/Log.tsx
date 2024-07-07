@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { urlValidar } from '../endpoints';
 import { MisRutas } from '../Rutas/MisRutas'
+import { IUser } from './interface/IUser';
 
-export const Log = () => {
+export const Log: React.FC = () => {
     axios.defaults.withCredentials = true;
-    const [user, setUser] = useState({
+    const [user, setUser] = useState<IUser>({
         id: 0,
         name: "",
         correo: "",
@@ -15,30 +16,28 @@ export const Log = () => {
         isAdmin: false
     });
 
-    const [authenticated, setAuthenticated] = useState(false);
-    const [error, setError] = useState(null);
+    const [authenticated, setAuthenticated] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
 
-
-    const handleChange = (e) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUser({ ...user, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const response = await axios.post(urlValidar, user);
             if (response.data.success) {
                 setAuthenticated(true);
-                console.log({ response }, authenticated)
-
+                console.log({ response }, authenticated);
+            } else {
+                setError(response.data.message);
             }
-            else {
-                setError(response.message);
-            }
-        } catch (error) {
-            setError(error.message)
+        } catch (error: any) {
+            setError(error.message);
             console.error(error);
         }
     };
