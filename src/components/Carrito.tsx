@@ -198,7 +198,7 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS, GFL
               </ListItem>
             ))}
           </ul>
-          <Divider component="li" />
+          <Divider component="ul" />
         </li>
       ))}
       {/* Confirmación para eliminar item del carrito */}
