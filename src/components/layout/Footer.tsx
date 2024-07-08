@@ -7,7 +7,7 @@ export const Footer = () => {
         <Box
             component="footer"
             sx={{
-                bgcolor: 'primary.main',
+                bgcolor: '#f78fa7',
                 color: 'white',
                 py: 2,
                 mt: 'auto',

@@ -16,6 +16,8 @@ import { Link } from 'react-router-dom';
 
 
 export const HeaderNav = () => {
+    const colorMainLetras = 'white';
+    const backgroudColor = '#f44685';
     
     const pages = ['Bienvenido', 'Tienda', 'Contáctanos'];
     const links = ['home', 'store/warehouse', 'contactus', 'store/shopingcart'];
@@ -31,7 +33,7 @@ export const HeaderNav = () => {
     };
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: 'white' }}>
+        <AppBar position="static" sx={{ backgroundColor: backgroudColor }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {/*Menu nav PC*/}
@@ -40,7 +42,7 @@ export const HeaderNav = () => {
                         component={Link}
                         to={`/${links[1]}`}
                     >
-                        <StoreMallDirectory sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: '#fa4529' }} />
+                        <StoreMallDirectory sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: colorMainLetras }} />
                     </IconButton>
 
                     <Typography
@@ -52,7 +54,7 @@ export const HeaderNav = () => {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: '#fa4529',
+                            color: colorMainLetras,
                             textDecoration: 'none',
 
                         }}
@@ -62,7 +64,7 @@ export const HeaderNav = () => {
                         {title}
                     </Typography>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', color: '#fa4529' } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', color: colorMainLetras } }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -88,16 +90,18 @@ export const HeaderNav = () => {
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
                             sx={{
-                                display: { xs: 'block', md: 'none', color: '#fa4529' },
+                                display: { xs: 'block', md: 'none', color: colorMainLetras, },
                             }}
                         >
 
                             {pages.map((page, i) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page} onClick={handleCloseNavMenu}
+                                sx={{backgroundColor: backgroudColor}}
+                                >
 
                                     <Typography
                                         textAlign="center"
-                                        sx={{ textDecoration: 'none', color: '#fa4529' }}
+                                        sx={{ textDecoration: 'none', color: colorMainLetras }}
                                         component={Link}
                                         to={`/${links[i]}`}
                                     >
@@ -113,7 +117,7 @@ export const HeaderNav = () => {
                     <Typography
                         component={Link}
                         to={`/${links[1]}`}>
-                        <StoreMallDirectory sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: '#fa4529' }} />
+                        <StoreMallDirectory sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: colorMainLetras }} />
                     </Typography>
                     <Typography
                         variant="h6"
@@ -125,7 +129,7 @@ export const HeaderNav = () => {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: '#fa4529',
+                            color: colorMainLetras,
                             textDecoration: 'none',
 
                         }}
@@ -140,7 +144,7 @@ export const HeaderNav = () => {
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: '#fa4529', display: 'block' }}
+                                sx={{ my: 2, color: colorMainLetras, display: 'block' }}
                                 component={Link}
                                 to={`/${links[i]}`}
                             >
@@ -152,7 +156,7 @@ export const HeaderNav = () => {
 
 
                     <Tooltip title="Ver Carrito">
-                        <IconButton sx={{ p: 0, color: '#fa4529' }}
+                        <IconButton sx={{ p: 0, color: colorMainLetras }}
                             component={Link}
                             to={`/${links[3]}`}>
                             <ShoppingCart />

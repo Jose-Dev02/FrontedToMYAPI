@@ -13,12 +13,28 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
+import {Container} from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import { AddShoppingCart, Favorite, FavoriteBorder, Check } from '@mui/icons-material';
 import { ICartItem } from './interface/ICartItem';
 import { IItem } from './interface/IItem';
 import { ICategory } from './interface/ICategory';
+
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { styled } from '@mui/material/styles';
+
+
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 10,
+    borderRadius: 5,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: 5,
+      backgroundColor: '#f78fa7'  //theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+    },
+  }));
 
 interface TiendaProps {
     carrito: ICartItem[];
@@ -139,7 +155,20 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
     }, []);
 
     if (state.loading) {
-        return <div>Loading...</div>;
+        return (
+            <Container
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '60vh',
+              }}
+            >
+              <Box sx={{ width: '50%' }}>
+                <BorderLinearProgress variant="indeterminate" />
+              </Box>
+            </Container>
+          );
     }
 
     if (state.error) {
@@ -162,21 +191,21 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
                                 
                             },
                             '& .MuiTabs-indicator': {
-                                  backgroundColor: '#fa4529',
+                                  backgroundColor: '#fd5f80',
                                 },
                         }}
                     >
                         {state.categories.map((categoria) => (
                             <Tab
                             sx={{'&:hover':{
-                                    backgroundColor: '#ffddf4'
+                                    backgroundColor: '#fb86c5'
                                 },
                                 
                                 '&.Mui-selected': {
                                   color: 'white',
-                                  backgroundColor: '#fa4529',
+                                  backgroundColor: '#fd5f80',
                                   '&:hover':{
-                                    backgroundColor:'#fa4529',
+                                    backgroundColor:'#fd5f80',
                                     opacity: 0.9
                                   }
                                 },
@@ -192,7 +221,7 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
             </div>
 
             <div>
-                 <Box sx={{ flexGrow: 1,  paddingTop: 2 }}> 
+                 <Box sx={{ flexGrow: 1,  py: 2, px:1 }}> 
                     <Grid container spacing={2}>
                         {state.filteredItems.map((item) => (
                             <Grid item xs={6} sm={6} md={3} key={item.id}>

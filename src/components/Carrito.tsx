@@ -169,7 +169,7 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
                     </IconButton>
                     <Tooltip title='Eliminar del carrito'>
                     <IconButtonStyled
-                      sx={{ color: '#fa4529',"&:hover": { color: '#000'}, }}
+                      sx={{ color: 'red',"&:hover": { color: '#000'}, }}
                       edge="end"
                       aria-label="delete"
                       onClick={() => confirmRemoveItem(item)}
