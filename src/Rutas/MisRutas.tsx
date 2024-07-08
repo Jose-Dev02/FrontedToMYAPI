@@ -8,7 +8,7 @@ import { Footer } from '../components/layout/Footer.tsx';
 import { Tienda } from '../components/Tienda.tsx';
 import { Carrito } from '../components/Carrito.tsx';
 import { ICartItem } from '../components/interface/ICartItem.tsx';
-import { IItem } from '../components/interface/IItem.tsx';
+
 
 
 export const MisRutas: React.FC = () => {
@@ -23,6 +23,11 @@ export const MisRutas: React.FC = () => {
         return data ? JSON.parse(data) : []
     }
 
+    useEffect(()=>{
+        setCarrito(getFromLocalStorage);
+        
+    },[])
+    console.log(carrito);
     return (
 
         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -39,8 +44,8 @@ export const MisRutas: React.FC = () => {
                             <Route path='/home' element={<Home />} />
                             <Route path='/contactus' element={<ContactUs />} />
                             <Route path='/*' element={<Home />} />
-                            <Route path='/store/warehouse' element={<Tienda carrito={carrito} setCarrito={setCarrito} SLS ={SaveLocalStorage} GFLS={getFromLocalStorage}  />} />
-                            <Route path='/store/shopingcart' element={<Carrito carrito={carrito} setCarrito={setCarrito} SLS ={SaveLocalStorage} GFLS={getFromLocalStorage} />} />
+                            <Route path='/store/warehouse' element={<Tienda carrito={carrito} setCarrito={setCarrito} SLS ={SaveLocalStorage}  />} />
+                            <Route path='/store/shopingcart' element={<Carrito carrito={carrito} setCarrito={setCarrito} SLS ={SaveLocalStorage}  />} />
 
                         </Routes>
 

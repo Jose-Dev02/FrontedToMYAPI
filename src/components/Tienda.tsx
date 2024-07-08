@@ -24,10 +24,10 @@ interface TiendaProps {
     carrito: ICartItem[];
     setCarrito: React.Dispatch<React.SetStateAction<ICartItem[]>>;
     SLS: (carrito: ICartItem[]) => void; // Función para guardar en localStorage
-    GFLS: () => ICartItem[]; // Función para obtener del localStorage
+    //GFLS: () => ICartItem[]; // Función para obtener del localStorage
 }
 
-export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS, GFLS }) => {
+export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
     const [state, setState] = useState({
         value: 0,
         loading: true,
@@ -76,11 +76,17 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS, GFLS }
 
         setCarrito((prevCarrito) => {
             const isInCart = prevCarrito.find((cartItem) => cartItem.item.id === item.id);
+            let localCarrito: ICartItem[] = [];
             if (isInCart) {
-                return prevCarrito.filter((cartItem) => cartItem.item.id !== item.id);
+                localCarrito = prevCarrito.filter((cartItem) => cartItem.item.id !== item.id);
+                SLS(localCarrito);
+               return localCarrito;
             } else {
-                return [...prevCarrito, { item, quantity: 1 }];
+                localCarrito = [...prevCarrito, { item, quantity: 1 }];
+                SLS(localCarrito);
+                return localCarrito;
             }
+            
         });
 
     };
