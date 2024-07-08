@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import { ICartItem } from './interface/ICartItem';
 import { ICategory } from './interface/ICategory';
-import { Divider, ListItemSecondaryAction, IconButton, Dialog, TextField, DialogTitle, DialogContent, DialogActions, Button, Typography, Tooltip } from '@mui/material';
+import { Divider, ListItemSecondaryAction, IconButton, Dialog, TextField, DialogTitle, DialogContent, DialogActions, Button, Typography, Tooltip, Avatar } from '@mui/material';
 import { Add, Delete, Remove } from '@mui/icons-material';
 import styled from '@emotion/styled';
 
@@ -46,7 +46,7 @@ const ListItemTextStyled = styled(ListItemText)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 70%;
+  max-width: 50%;
 `;
 
 interface ICarritoProps {
@@ -119,11 +119,21 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
       >
         {categoryUniqueInCart.map((category) => (
           <li key={category.id}>
+             <Divider component="ul" />
             <ul>
               <ListSubheader>{category.name}</ListSubheader>
               {carrito.map((item) => (
                 item.item.product.categoryId === category.id &&
                 <ListItem key={item.item.id}>
+                   <Avatar
+                      alt={item.item.product.name}
+                      src={item.item.product.mediaURL}
+                      sx={{
+                        width: { xs: 50, md: 60 }, // Ancho responsive según el tamaño de la pantalla
+                        height: { xs: 50, md: 60 }, // Alto responsive según el tamaño de la pantalla
+                        mr:'20px'
+                      }}
+                    />
                   <ListItemTextStyled primary={item.item.product.name} secondary={`${item.item.product.price}$`} />
                   <ListItemSecondaryActionStyled sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 1 }}>
                     <IconButton
@@ -145,7 +155,7 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
                           handleAdjustQuantity(item, newQuantity - item.quantity);
                         }
                       }}
-                      sx={{ width: '15%', textAlign: 'center' }}
+                      sx={{ width: '15%', textAlign: 'center', ml:'10px' }}
                     />
                     <IconButtonStyled
                       edge="end"
@@ -168,7 +178,7 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
                 </ListItem>
               ))}
             </ul>
-            <Divider component="ul" />
+           
           </li>
         ))}
       </List>
