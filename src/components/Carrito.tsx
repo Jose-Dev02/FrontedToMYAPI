@@ -27,11 +27,12 @@ const ListItemSecondaryActionStyled = styled(ListItemSecondaryAction)`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
+  gap: 2px;
+  max-width: 300px;
 
   @media (max-width: 600px) {
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 1px;
   }
 `;
 
@@ -39,14 +40,11 @@ const IconButtonStyled = styled(IconButton)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  max-width: 50%;
 `;
 
 const ListItemTextStyled = styled(ListItemText)`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 50%;
+  max-width: 40%;
 `;
 
 interface ICarritoProps {
@@ -134,13 +132,17 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
                         mr:'20px'
                       }}
                     />
-                  <ListItemTextStyled primary={item.item.product.name} secondary={`${item.item.product.price}$`} />
+                  <ListItemTextStyled 
+                    primary={item.item.product.name} 
+                    secondary={`${item.item.product.price}$`} 
+                    />
                   <ListItemSecondaryActionStyled sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 1 }}>
                     <IconButton
                       edge="end"
                       aria-label="remove"
                       onClick={() => handleAdjustQuantity(item, -1)}
                       disabled={item.quantity <= 1}
+                      sx={{mr:'2px'}}
                     >
                       <Remove />
                     </IconButton>
@@ -155,15 +157,16 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
                           handleAdjustQuantity(item, newQuantity - item.quantity);
                         }
                       }}
-                      sx={{ width: '15%', textAlign: 'center', ml:'10px' }}
+                      sx={{ width: '15%', textAlign: 'center', }}
                     />
-                    <IconButtonStyled
+                    <IconButton
                       edge="end"
                       aria-label="add"
                       onClick={() => handleAdjustQuantity(item, 1)}
+                      
                     >
                       <Add />
-                    </IconButtonStyled>
+                    </IconButton>
                     <Tooltip title='Eliminar del carrito'>
                     <IconButtonStyled
                       sx={{ color: '#fa4529',"&:hover": { color: '#000'}, }}

@@ -42,7 +42,7 @@ export const MisRutas: React.FC = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          px: 3,
+          px: 1,
         }}
       >
                 <BrowserRouter>

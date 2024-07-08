@@ -158,12 +158,30 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
                         allowScrollButtonsMobile
                         sx={{
                             [`& .${tabsClasses.scrollButtons}`]: {
-                                '&.Mui-disabled': { opacity: 0.2 },
+                                '&.Mui-disabled': { opacity: 0.3 },
+                                
                             },
+                            '& .MuiTabs-indicator': {
+                                  backgroundColor: '#fa4529',
+                                },
                         }}
                     >
                         {state.categories.map((categoria) => (
                             <Tab
+                            sx={{'&:hover':{
+                                    backgroundColor: '#ffddf4'
+                                },
+                                
+                                '&.Mui-selected': {
+                                  color: 'white',
+                                  backgroundColor: '#fa4529',
+                                  '&:hover':{
+                                    backgroundColor:'#fa4529',
+                                    opacity: 0.9
+                                  }
+                                },
+                                
+                                }}
                                 key={categoria.id}
                                 label={categoria.name}
                                 onClick={(e) => handleSelect(e, categoria.id)}
@@ -174,17 +192,19 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
             </div>
 
             <div>
-                <Box sx={{ flexGrow: 1, padding: 2 }}>
+                 <Box sx={{ flexGrow: 1,  paddingTop: 2 }}> 
                     <Grid container spacing={2}>
                         {state.filteredItems.map((item) => (
-                            <Grid item xs={12} sm={6} md={3} key={item.id}>
+                            <Grid item xs={6} sm={6} md={3} key={item.id}>
                                 <Card
                                     sx={{
+                                        minHeight: '100%',
                                         maxWidth: '100%',
                                         '@media (max-width:600px)': {
                                             maxWidth: 345,
                                         },
                                         '@media (min-width:600px)': {
+                                            
                                             maxWidth: 400,
                                         },
                                         '@media (min-width:960px)': {
