@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -6,11 +5,11 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import { ICartItem } from './interface/ICartItem';
 import { ICategory } from './interface/ICategory';
-import { Divider, ListItemSecondaryAction, IconButton,Dialog,TextField ,DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
+import { Divider, ListItemSecondaryAction, IconButton, Dialog, TextField, DialogTitle, DialogContent, DialogActions, Button, Typography, Tooltip } from '@mui/material';
 import { Add, Delete, Remove } from '@mui/icons-material';
 import styled from '@emotion/styled';
 
-export const QuantityInput = styled(TextField)`
+const QuantityInput = styled(TextField)`
   & input[type=number] {
     -moz-appearance: textfield;
   }
@@ -24,19 +23,41 @@ export const QuantityInput = styled(TextField)`
   }
 `;
 
+const ListItemSecondaryActionStyled = styled(ListItemSecondaryAction)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
 
+  @media (max-width: 600px) {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+`;
+
+const IconButtonStyled = styled(IconButton)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+`;
+
+const ListItemTextStyled = styled(ListItemText)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+`;
 
 interface ICarritoProps {
   carrito: ICartItem[];
   setCarrito: React.Dispatch<React.SetStateAction<ICartItem[]>>;
   SLS: (carrito: ICartItem[]) => void;
- // GFLS: () => ICartItem[];
 }
 
 export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [itemToRemove, setItemToRemove] = useState<ICartItem | null>(null);
-
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -45,12 +66,11 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
 
   const handleRemoveItem = () => {
     if (itemToRemove) {
-      setCarrito(prevCarrito =>{
+      setCarrito(prevCarrito => {
         const localCarrito = prevCarrito.filter(item => item.item.id !== itemToRemove.item.id);
         SLS(localCarrito);
         return localCarrito;
-      }
-      );
+      });
       handleCloseDialog();
     }
   };
@@ -60,7 +80,7 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
       cartItem.item.id === item.item.id ? { ...cartItem, quantity: cartItem.quantity + amount } : cartItem
     );
     setCarrito(updatedCarrito);
-    SLS(updatedCarrito); // Guardar en localStorage aquí si es necesario
+    SLS(updatedCarrito);
   };
 
   const confirmRemoveItem = (item: ICartItem) => {
@@ -84,69 +104,75 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
   const categoryUniqueInCart = getUniqueCategories(carrito);
 
   return (
-    <List
-      sx={{
-        width: '100%',
-        height: '60vh',
-        bgcolor: 'background.paper',
-        position: 'relative',
-        overflow: 'auto',
-        '& ul': { padding: 0 },
-        boxShadow: '1px 1px 3px rgba(0, 0, 0, 0.2), -1px 1px 3px rgba(0, 0, 0, 0.2)'
-      }}
-      subheader={<li />}
-    >
-      {categoryUniqueInCart.map((category) => (
-        <li key={category.id}>
-          <ul>
-            <ListSubheader>{category.name}</ListSubheader>
-            {carrito.map((item) => (
-              item.item.product.categoryId === category.id &&
-              <ListItem key={item.item.id}>
-                <ListItemText primary={item.item.product.name} secondary={`${item.item.product.price}$`} />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    aria-label="remove"
-                    onClick={() => handleAdjustQuantity(item, -1)}
-                    disabled={item.quantity <= 1}
-                  >
-                    <Remove />
-                  </IconButton>
-                  <QuantityInput
-                    variant="outlined"
-                    size="small"
-                    type="number"                                      
-                    value={item.quantity}
-                    onChange={(e) => {
-                      const newQuantity = parseInt(e.target.value);
-                      if (!isNaN(newQuantity) && newQuantity >= 1) {
-                        handleAdjustQuantity(item, newQuantity - item.quantity);
-                      }
-                    }}
-                    sx={{ width: '18%', textAlign: 'center' }}
-                  />
-                  <IconButton
-                    edge="end"
-                    aria-label="add"
-                    onClick={() => handleAdjustQuantity(item, 1)}
-                  >
-                    <Add />
-                  </IconButton>
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => confirmRemoveItem(item)}
-                  >
-                    <Delete color='' />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </ul>
-          <Divider component="ul" />
-        </li>
-      ))}
+    <>
+      <List
+        sx={{
+          width: '100%',
+          height: '60vh',
+          bgcolor: 'background.paper',
+          position: 'relative',
+          overflow: 'auto',
+          '& ul': { padding: 0 },
+          boxShadow: '1px 1px 3px rgba(0, 0, 0, 0.2), -1px 1px 3px rgba(0, 0, 0, 0.2)'
+        }}
+        subheader={<li />}
+      >
+        {categoryUniqueInCart.map((category) => (
+          <li key={category.id}>
+            <ul>
+              <ListSubheader>{category.name}</ListSubheader>
+              {carrito.map((item) => (
+                item.item.product.categoryId === category.id &&
+                <ListItem key={item.item.id}>
+                  <ListItemTextStyled primary={item.item.product.name} secondary={`${item.item.product.price}$`} />
+                  <ListItemSecondaryActionStyled sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 1 }}>
+                    <IconButton
+                      edge="end"
+                      aria-label="remove"
+                      onClick={() => handleAdjustQuantity(item, -1)}
+                      disabled={item.quantity <= 1}
+                    >
+                      <Remove />
+                    </IconButton>
+                    <QuantityInput
+                      variant="outlined"
+                      size="small"
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) => {
+                        const newQuantity = parseInt(e.target.value);
+                        if (!isNaN(newQuantity) && newQuantity >= 1) {
+                          handleAdjustQuantity(item, newQuantity - item.quantity);
+                        }
+                      }}
+                      sx={{ width: '15%', textAlign: 'center' }}
+                    />
+                    <IconButtonStyled
+                      edge="end"
+                      aria-label="add"
+                      onClick={() => handleAdjustQuantity(item, 1)}
+                    >
+                      <Add />
+                    </IconButtonStyled>
+                    <Tooltip title='Eliminar del carrito'>
+                    <IconButtonStyled
+                      sx={{ color: '#fa4529',"&:hover": { color: '#000'}, }}
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => confirmRemoveItem(item)}
+                    >
+                      <Delete />
+                    </IconButtonStyled>
+                    </Tooltip>
+                  </ListItemSecondaryActionStyled>
+                </ListItem>
+              ))}
+            </ul>
+            <Divider component="ul" />
+          </li>
+        ))}
+      </List>
+
       {/* Confirmación para eliminar item del carrito */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Confirmar Eliminación</DialogTitle>
@@ -164,8 +190,6 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
           </Button>
         </DialogActions>
       </Dialog>
-    </List>
+    </>
   );
 };
-
-

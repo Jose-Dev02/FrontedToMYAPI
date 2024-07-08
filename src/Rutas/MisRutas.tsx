@@ -8,6 +8,7 @@ import { Footer } from '../components/layout/Footer.tsx';
 import { Tienda } from '../components/Tienda.tsx';
 import { Carrito } from '../components/Carrito.tsx';
 import { ICartItem } from '../components/interface/ICartItem.tsx';
+import { Box } from '@mui/material';
 
 
 
@@ -30,15 +31,26 @@ export const MisRutas: React.FC = () => {
     console.log(carrito);
     return (
 
-        <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <div className='layout' style={{ flex: 1 }}>
+        <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+        }}
+      >
+         <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          px: 3,
+        }}
+      >
                 <BrowserRouter>
                     {/* Header y Navegacion */}
                     < HeaderNav />
 
 
                     {/*Contenido Central */}
-                    <section className='content'>
                         <Routes>
                             <Route path='/' element={<Navigate to="/home" />} />
                             <Route path='/home' element={<Home />} />
@@ -49,13 +61,11 @@ export const MisRutas: React.FC = () => {
 
                         </Routes>
 
-                    </section>
-                    {/*Footer */}
-
                 </BrowserRouter>
-            </div>
+            
+            </Box>
             <Footer />
-        </div>
+        </Box>
     )
 }
 

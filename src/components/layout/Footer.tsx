@@ -9,8 +9,8 @@ export const Footer = () => {
             sx={{
                 bgcolor: 'primary.main',
                 color: 'white',
-                py: 3,
-                height: '8%',
+                py: 2,
+                mt: 'auto',
             }}
         >
             <Container maxWidth="lg">
