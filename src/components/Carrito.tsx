@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import { ICartItem } from './interface/ICartItem';
 import { ICategory } from './interface/ICategory';
-import { Divider, ListItemSecondaryAction, IconButton, Dialog, TextField, DialogTitle, DialogContent, DialogActions, Button, Typography, Tooltip, Avatar } from '@mui/material';
-import { Add, Delete, Remove } from '@mui/icons-material';
+import { Divider, ListItemSecondaryAction, IconButton, Dialog, TextField, DialogTitle, DialogContent, DialogActions, Button, Typography, Tooltip, Avatar, Box } from '@mui/material';
+import { Add, Delete, Remove, ShoppingCart } from '@mui/icons-material';
 import styled from '@emotion/styled';
 
 const QuantityInput = styled(TextField)`
@@ -56,7 +56,10 @@ interface ICarritoProps {
 export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [itemToRemove, setItemToRemove] = useState<ICartItem | null>(null);
-
+  const [price,setPrice] = useState<number>(0.00);
+  const txtComprar = 'Comprar';
+  const NUMERO_TELEFONO = '5355135638'; 
+  const WHATSAPP_URL = 'https://wa.me';
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setItemToRemove(null);
@@ -98,6 +101,21 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
     });
     return categories;
   };
+  const handleComprarClick = () => {
+    const itemDetails = carrito.map(car => {
+      return `*${car.item.product.name}* x ${car.quantity} : *$${(car.quantity * car.item.product.price).toFixed(2)}*`;
+    }).join('\n');
+
+    const message = `*PEDIDO*:\n\n${itemDetails}\n\n*Total*: *$${price.toFixed(2)}*`;
+    const whatsappLink = `${WHATSAPP_URL}/${NUMERO_TELEFONO}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappLink, '_blank');
+   
+  };
+
+  useEffect(() => {
+    const actualPrice = carrito.reduce((total, car) => total + car.quantity * car.item.product.price, 0);
+    setPrice(actualPrice);
+  }, [carrito]);
 
   const categoryUniqueInCart = getUniqueCategories(carrito);
 
@@ -150,6 +168,7 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
                       variant="outlined"
                       size="small"
                       type="number"
+                      
                       value={item.quantity}
                       onChange={(e) => {
                         const newQuantity = parseInt(e.target.value);
@@ -169,7 +188,7 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
                     </IconButton>
                     <Tooltip title='Eliminar del carrito'>
                     <IconButtonStyled
-                      sx={{ color: 'red',"&:hover": { color: '#000'}, }}
+                      sx={{ color: /*'#ff149c'*/'red',"&:hover": { color: '#000'}, }}
                       edge="end"
                       aria-label="delete"
                       onClick={() => confirmRemoveItem(item)}
@@ -185,8 +204,31 @@ export const Carrito: React.FC<ICarritoProps> = ({ carrito, setCarrito, SLS }) =
           </li>
         ))}
       </List>
+      <Box
+      
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      sx={{ width: '100%', height: '10vh' }}
+    >
+        <Typography variant="h6" component="span" marginLeft={2}>
+        {`$${price}.00`}
+      </Typography>
+      <Box>
+        <Button variant="contained" 
+          sx = {{bgcolor: '#f44685', '&:hover': {bgcolor: /*'#f44685'*/ '#000'}}} 
+          onClick={handleComprarClick} 
+         >
+        
+        <ShoppingCart fontSize="small" />
+         {txtComprar}
+        </Button>
+      </Box>
+     
+    </Box>
 
-      {/* Confirmación para eliminar item del carrito */}
+
+      {/*Cuadro de dialogo para eliminar un item */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Confirmar Eliminación</DialogTitle>
         <DialogContent>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { urlCategoriesAll, urlWarehouseGetAll } from '../endpoints.tsx';
 
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
@@ -178,7 +178,7 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
     return (
         <div>
             <div>
-                <Box sx={{ bgcolor: 'background.paper', boxShadow: '1px 1px 3px rgba(0, 0, 0, 0.2), -1px 1px 3px rgba(0, 0, 0, 0.2)' }}>
+                <Box sx={{ bgcolor: 'background.paper', boxShadow: '1px 1px 3px rgba(0, 0, 0, 0.2), -1px 1px 3px rgba(0, 0, 0, 0.2)', }}>
                     <Tabs
                         value={state.value}
                         onChange={handleChange}
@@ -219,12 +219,16 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
                     </Tabs>
                 </Box>
             </div>
+            <Fragment>
+                <Box sx={{py:1}}>
 
+                </Box>
+            </Fragment>
             <div>
-                 <Box sx={{ flexGrow: 1,  py: 2, px:1 }}> 
+                 <Box sx={{ flexGrow: 1, px:1,height: '60vh', position: 'relative', overflow: 'auto' }}> 
                     <Grid container spacing={2}>
                         {state.filteredItems.map((item) => (
-                            <Grid item xs={6} sm={6} md={3} key={item.id}>
+                            <Grid item xs={6} sm={6} md={12} key={item.id}>
                                 <Card
                                     sx={{
                                         minHeight: '100%',
