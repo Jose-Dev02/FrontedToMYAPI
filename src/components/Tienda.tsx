@@ -228,7 +228,7 @@ export const Tienda: React.FC<TiendaProps> = ({ carrito, setCarrito, SLS }) => {
                  <Box sx={{ flexGrow: 1, px:1,height: '60vh', position: 'relative', overflow: 'auto' }}> 
                     <Grid container spacing={2}>
                         {state.filteredItems.map((item) => (
-                            <Grid item xs={6} sm={6} md={12} key={item.id}>
+                            <Grid item xs={6} sm={6} md={3} key={item.id}>
                                 <Card
                                     sx={{
                                         minHeight: '100%',
